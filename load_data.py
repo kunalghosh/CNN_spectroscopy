@@ -16,12 +16,17 @@ def load_experiment_data(coulomb_file, spectra_file, data_specified, valid_and_t
 		energies = np.load(spectra_file)['spectra']
 
 	# train, test, val split
-	train_split = 0.9
-	val_test_split = 0.5
+	# train_split = 0.9
+	# val_test_split = 0.5
 
-	coulomb_train, coulomb_test, energies_train, energies_test = train_test_split(coulomb, energies, test_size = 1.0-train_split, random_state=0)
+	# first extract a fixed validation and test set
+	coulomb_test, coulomb_other, energies_test, energies_other = train_test_split(coulomb, energies, train_size = valid_and_test_size, random_state=0)
+	coulomb_val, coulomb_other, energies_val, energies_other = train_test_split(coulomb_other, energies_other, train_size = valid_and_test_size, random_state=0)
 
-	coulomb_test, coulomb_val, energies_test, energies_val = train_test_split(coulomb_test, energies_test, test_size = val_test_split, random_state=0)
+	# of the remaining take certain percent as the training set
+	coulomb_train, coulomb_other, energies_train, energies_other = train_test_split(coulomb_other, energies_other, train_size = train_split, random_state=0)
+
+	# coulomb_test, coulomb_val, energies_test, energies_val = train_test_split(coulomb_test, energies_test, test_size = val_test_split, random_state=0)
 
 
 	coulomb_train = torch.from_numpy(coulomb_train).unsqueeze(1).float()
@@ -32,7 +37,7 @@ def load_experiment_data(coulomb_file, spectra_file, data_specified, valid_and_t
 	energies_val = torch.from_numpy(energies_val).float() 
 
 
-
+	print(f"Train length {len(energies_train)} validation length {len(energies_val)} test length {len(energies_val)}.")
 
 	train_data = torch.utils.data.TensorDataset(coulomb_train, energies_train)
 	train_loader = torch.utils.data.DataLoader(train_data, batch_size = batch_size_train, shuffle=True)
