@@ -3,12 +3,12 @@ import torch
 import torch.utils.data
 from sklearn.model_selection import train_test_split
 import pkg_resources
-pkg_resources.require("torch==1.0.0")
+pkg_resources.require("torch>=1.0.0")
 
 #Load data
 
-def load_experiment_data(spectra_file, data_specified, batch_size_train = 90, batch_size_test = 1000, batch_size_validation=1):
-	coulomb = np.absolute(np.load('coulomb.npz')['coulomb'])
+def load_experiment_data(coulomb_file, spectra_file, data_specified, valid_and_test_size=6627, train_split=0.9, batch_size_train = 90, batch_size_test = 1000, batch_size_validation=1):
+	coulomb = np.absolute(np.load(coulomb_file)['coulomb'])
 
 	if spectra_file[-4:] == '.txt':
 		energies = np.loadtxt(spectra_file)
