@@ -12,10 +12,10 @@ import spectroscopy_cnn_model
 import load_data
 
 
-pkg_resources.require("torch==1.0.0")
+pkg_resources.require("torch>=1.0.0")
 
 #Run with
-# python3 spectroscopy_run_experiments.py spectra.npz 10 exp00 rmse 300
+# python3 spectroscopy_run_experiments.py coulomb.npz spectra.npz 10 exp00 rmse 300
 
 #Set device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -23,15 +23,17 @@ print("Device is {}".format(device))
 
 #Handle file and output arguments
 spectra_file = sys.argv[1]
-runtime = int(sys.argv[2])
-experiment_number = sys.argv[3]
-criterion_string = sys.argv[4]
+coulomb_file = sys.argv[2]
+runtime = int(sys.argv[3])
+experiment_number = sys.argv[4]
+criterion_string = sys.argv[5]
 spectra_name = spectra_file[:-4]
-output_spectra_length = int(sys.argv[5])
+output_spectra_length = int(sys.argv[6])
+train_split_percent = float(sys.argv[7])
 print("Running training on Spectra: {} for {} epochs. Experiment number {}".format(spectra_name, runtime, experiment_number))
 
 #Load data
-train_loader, test_loader, validation_loader = load_data.load_experiment_data(spectra_file, 'all')
+train_loader, test_loader, validation_loader = load_data.load_experiment_data(coulomb_file, spectra_file, 'all', train_split=train_split_percent)
 
 #Create network
 network = spectroscopy_cnn_model.create_network(output_spectra_length)
@@ -106,7 +108,7 @@ def test():
 
 def run_train_test(epochs):
 
-	for epoch in range(1, epochs):
+	for epoch in range(1, epochs+1):
 		print("Epoch {} out of {}".format(epoch, epochs))
 		train(epoch)
 		test()
@@ -127,9 +129,11 @@ def run_train_test(epochs):
 #		if helper_functions.earlystop_criterion(test_losses) > 150:
 #			print("Training ended early because of slow improvement.")
 #			break
+		sys.stdout.flush()
+		sys.stderr.flush()
 
 #Run train and test
 starttime = timeit.default_timer()
 run_train_test(runtime)
 print("Training took {} ".format(timeit.default_timer()-starttime))
-print("Minimum testing error was {} and occured at epoch {}".format(min(test_losses), np.argmin(test_losses)))
+print("Minimum testing error was {} and occured at epoch {}".format(min(test_losses), np.argmin(test_losses)+1))
