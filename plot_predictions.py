@@ -21,7 +21,7 @@ coulomb_test, coulomb_val, energies_test, energies_val = train_test_split(coulom
 
 def relative_difference(prediction, label):
 	dE = 30/len(prediction) #how many eV's one dE is
-	numerator = np.sum(np.power(dE*(label-prediction),2))
+	numerator = np.sum(dE*np.power((label-prediction),2))
 	denominator = np.sum(dE*label)
 
 	return 1-np.sqrt(numerator)/denominator
