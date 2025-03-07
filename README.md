@@ -1,7 +1,12 @@
-# CNN_spectroscopy
-1. Edits to the PyTorch code and Future edits : Kunal Ghosh
-2. original Author of PyTorch code : Mathias Smeds 
-3. based on code in Theano by : Kunal Ghosh
+# Deep learning for predicting molecule spectra.
+Written as a special assignment in physics for Aalto Univesity CEST group.
+
+Network originally designed and created in Theano by Kunal Ghosh.
+
+Rewritten into PyTorch by Mathias Smeds, along with further hyperparameter optimisation.
+
+Final submission at
+https://github.com/modjas/CNN_spectroscopy/blob/master/PHYS_special_assignment_mathiassmeds.pdf
 
 # Packages
 1. conda install pytorch torchvision cudatoolkit=9.0 -c pytorch

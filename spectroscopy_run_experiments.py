@@ -30,6 +30,13 @@ criterion_string = sys.argv[5]
 spectra_name = spectra_file[:-4]
 output_spectra_length = int(sys.argv[6])
 train_split_percent = float(sys.argv[7])
+# =======
+# spectra_file = 'data/' + sys.argv[1]
+# runtime = int(sys.argv[2])
+# experiment_number = sys.argv[3]
+# criterion_string = sys.argv[4]
+# spectra_name = sys.argv[1][:-4]
+# output_spectra_length = int(sys.argv[5])
 print("Running training on Spectra: {} for {} epochs. Experiment number {}".format(spectra_name, runtime, experiment_number))
 
 #Load data
@@ -66,7 +73,7 @@ def train(epoch):
 		loss.backward()
 		optimizer.step()
 		if batch_idx % 100 == 0:
-			print("Train Epoch: {} [{}/{} ({:.0f} %)".format(epoch, batch_idx * len(data), len(train_loader.dataset), 100*batch_idx/len(train_loader)))
+			print("Train Epoch: {} [{}/{}] ({:.0f} %)".format(epoch, batch_idx * len(data), len(train_loader.dataset), 100*batch_idx/len(train_loader)))
 		batch_losses.append(loss.item())
 	if criterion_string == "rmse":
 		train_loss.append(np.sqrt(np.mean(batch_losses)))
