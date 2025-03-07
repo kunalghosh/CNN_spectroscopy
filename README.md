@@ -5,8 +5,7 @@ Network originally designed and created in Theano by Kunal Ghosh.
 
 Rewritten into PyTorch by Mathias Smeds, along with further hyperparameter optimisation.
 
-Final submission at 
-https://github.com/kunalghosh/CNN_spectroscopy/blob/master/PHYS_special_assignment_mathiassmeds.pdf
+Final submission at [link](./PHYS_special_assignment_mathiassmeds.pdf)
 
 # Packages
 1. conda install pytorch torchvision cudatoolkit=9.0 -c pytorch
